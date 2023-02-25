@@ -19,4 +19,15 @@ class Config {
     companion object {
         fun read(path: String): Config = ObjectMapper(JsonFactory()).readValue(File(path), Config::class.java)
     }
+
+    override fun toString(): String {
+        return "telegramBotToken = $telegramBotToken" +
+                "webhookURL = $webhookURL" +
+                "databaseName = $databaseName" +
+                "replyFrecuence = $replyFrecuence" +
+                "chatFrecuence = $chatFrecuence" +
+                "ownerChatId = $ownerChatId" +
+                "ownerId = $ownerId" +
+                "insults $insults"
+    }
 }
