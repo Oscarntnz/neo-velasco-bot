@@ -51,7 +51,7 @@ class MarkovTelegramBot(private val token: String, private val botPort: Int,
                 val config = Config.read(CONFIG_FILE_PATH)
             }
             else {
-                log("$CONFIG_FILE_PATH does not exist, checking environment variables values")
+                log("$CONFIG_FILE_PATH does not exist, checking environment variables")
 
                 config.telegramBotToken = System.getenv("TELEGRAM_BOT_TOKEN")
                 config.webhookURL = System.getenv("WEBSITE_HOSTNAME")
