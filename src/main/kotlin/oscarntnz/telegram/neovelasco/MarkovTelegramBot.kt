@@ -63,6 +63,7 @@ class MarkovTelegramBot(private val token: String, private val botPort: Int,
                 config.insults = System.getenv("INSULTS").split(',').toTypedArray()
             }
 
+            log(config.toString())
             val bot = MarkovTelegramBot(config.telegramBotToken,  System.getenv("PORT").toInt(), config.webhookURL,
             System.getenv("MONGODB_URI"), config.databaseName, config.replyFrecuence, config.chatFrecuence,
             ChatId.fromId(config.ownerChatId), config.ownerId, config.insults)
