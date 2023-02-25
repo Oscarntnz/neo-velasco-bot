@@ -16,8 +16,8 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import org.jetbrains.kotlin.konan.file.File
 import org.litote.kmongo.KMongo
+import java.io.File
 import java.util.Date
 import kotlin.random.Random
 
@@ -47,7 +47,7 @@ class MarkovTelegramBot(private val token: String, private val botPort: Int,
             val configFile = File(CONFIG_FILE_PATH)
             val config = Config()
 
-            if (configFile.exists) {
+            if (configFile.exists()) {
                 val config = Config.read(CONFIG_FILE_PATH)
             }
             else {
