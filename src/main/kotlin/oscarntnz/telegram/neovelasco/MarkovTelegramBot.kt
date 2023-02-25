@@ -16,6 +16,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import org.jetbrains.kotlin.konan.file.File
 import org.litote.kmongo.KMongo
 import java.util.Date
 import kotlin.random.Random
@@ -42,13 +43,32 @@ class MarkovTelegramBot(private val token: String, private val botPort: Int,
 
         @JvmStatic
         fun main(args: Array<String>) {
-            val config = Config.read(CONFIG_FILE_PATH)
+            log("Reading config file in $CONFIG_FILE_PATH")
+            val configFile = File(CONFIG_FILE_PATH)
+            val config = Config()
+
+            if (configFile.exists) {
+                val config = Config.read(CONFIG_FILE_PATH)
+            }
+            else {
+                log("$CONFIG_FILE_PATH does not exist, checking environment variables values")
+
+                config.telegramBotToken = System.getenv("TELEGRAM_BOT_TOKEN")
+                config.webhookURL = System.getenv("WEBSITE_HOSTNAME")
+                config.databaseName = System.getenv("DATABASE_NAME")
+                config.replyFrecuence = System.getenv("REPLY_FRECUENCE").toInt()
+                config.chatFrecuence = System.getenv("CHAT_FRECUENCE").toInt()
+                config.ownerChatId = System.getenv("OWNER_CHAT_ID").toLong()
+                config.ownerId = System.getenv("OWNER_ID").toLong()
+                config.insults = System.getenv("INSULTS").split(',').toTypedArray()
+            }
 
             val bot = MarkovTelegramBot(config.telegramBotToken,  System.getenv("PORT").toInt(), config.webhookURL,
             System.getenv("MONGODB_URI"), config.databaseName, config.replyFrecuence, config.chatFrecuence,
             ChatId.fromId(config.ownerChatId), config.ownerId, config.insults)
 
             try {
+                log("Starting bot")
                 bot.run()
             }
             catch (e: Exception) {
